@@ -6,15 +6,16 @@
 
 The `async-cuda` family of libraries is an experimental set of libraries for interacting with the
 GPU asynchronously. Since the GPU is just another I/O device (from the point of view of your
-program), the async model actually fits surprisingly well. The way it is implemented in `async-cuda`
-is that all operations are scheduled on a single runtime thread that drives the GPU. The interface
-of this library enforces that synchronization happens when it is necessary (and synchronization
-itself is also asynchronous).
+program), the async model actually fits surprisingly well.
+
+The way it is implemented in `async-cuda` is that all operations are scheduled on a single runtime
+thread that drives the GPU. The interface of this library enforces that synchronization happens when
+it is necessary (and synchronization itself is also asynchronous).
 
 The `async-cuda` project consists of:
-* [`async-cuda-core`](./async-cuda-core): CUDA core primitives such as streams and buffers.
-* [`async-cuda-npp`](./async-cuda-npp): Common NPP operations such as resizing and cropping.
-* [`async-tensorrt`](./async-tensorrt): Minimal wrapper for TensorRT.
+* [`async-cuda-core`](crates/async-cuda-core/README.md): CUDA core primitives such as streams and buffers.
+* [`async-cuda-npp`](crates/async-cuda-npp/README.md): Common NPP operations such as resizing and cropping.
+* [`async-tensorrt`](crates/async-tensorrt/README.md): Minimal wrapper for TensorRT.
 
 ## 🛠 S️️tatus
 
