@@ -14,6 +14,7 @@ repository = "https://github.com/oddity-ai/async-cuda"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
+async-cuda-core = { version = "*" }
 cpp = "0.5"
 cpp_build = "0.5"
 futures = { version = "0.3", default-features = false, features = ["std"] }

@@ -11,7 +11,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-async-cuda-core = { path = "../async-cuda-core" }
+async-cuda-core = { workspace = true }
 cpp = { workspace = true }
 
 [dev-dependencies]
