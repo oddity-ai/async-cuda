@@ -4,9 +4,9 @@
 <p align="center">Asynchronous CUDA streams and buffers.</p>
 <div align="center">
 
-![Crates.io](https://img.shields.io/crates/v/async-cuda-core)
-![Crates.io](https://img.shields.io/crates/l/async-cuda-core)
-![docs.rs](https://img.shields.io/docsrs/async-cuda-core)
+[![version](https://img.shields.io/crates/v/async-cuda-core)](https://crates.io/crates/async-cuda-core)
+[![license](https://img.shields.io/crates/l/async-cuda-core)](#license)
+[![docs](https://img.shields.io/docsrs/async-cuda-core)](https://docs.rs/async-cuda-core)
 
 </div>
 

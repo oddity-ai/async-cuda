@@ -4,9 +4,9 @@
 <p align="center">Asynchronous wrapper for TensorRT 8.</p>
 <div align="center">
 
-![Crates.io](https://img.shields.io/crates/v/async-tensorrt)
-![Crates.io](https://img.shields.io/crates/l/async-tensorrt)
-![docs.rs](https://img.shields.io/docsrs/async-tensorrt)
+[![version](https://img.shields.io/crates/v/async-tensorrt)](https://crates.io/crates/async-tensorrt)
+[![license](https://img.shields.io/crates/l/async-tensorrt)](#license)
+[![docs](https://img.shields.io/docsrs/async-tensorrt)](https://docs.rs/async-tensorrt)
 
 </div>
 
