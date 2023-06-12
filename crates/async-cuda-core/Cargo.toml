@@ -2,13 +2,13 @@
 name = "async-cuda-core"
 description = "Async CUDA streams and buffers for Rust."
 keywords = ["async", "nvidia", "cuda", "gpu"]
+readme = "README.md"
 categories.workspace = true
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-readme.workspace = true
 
 [dependencies]
 cpp = { workspace = true }

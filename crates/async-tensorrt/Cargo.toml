@@ -2,13 +2,13 @@
 name = "async-tensorrt"
 description = "Async TensorRT for Rust."
 keywords = ["async", "nvidia", "cuda", "gpu", "tensorrt", "inference"]
+readme = "README.md"
 categories.workspace = true
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-readme.workspace = true
 
 [dependencies]
 async-cuda-core = { path = "../async-cuda-core" }
