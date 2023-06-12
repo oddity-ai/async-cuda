@@ -13,9 +13,9 @@ thread that drives the GPU. The interface of this library enforces that synchron
 it is necessary (and synchronization itself is also asynchronous).
 
 The `async-cuda` project consists of:
-* [`async-cuda-core`](crates/async-cuda-core/README.md): CUDA core primitives such as streams and buffers.
-* [`async-cuda-npp`](crates/async-cuda-npp/README.md): Common NPP operations such as resizing and cropping.
-* [`async-tensorrt`](crates/async-tensorrt/README.md): Minimal wrapper for TensorRT.
+* [`async-cuda-core`](crates/async-cuda-core): CUDA core primitives such as streams and buffers.
+* [`async-cuda-npp`](crates/async-cuda-npp): Common NPP operations such as resizing and cropping.
+* [`async-tensorrt`](crates/async-tensorrt): Minimal wrapper for TensorRT.
 
 ## 🛠 S️️tatus
 
