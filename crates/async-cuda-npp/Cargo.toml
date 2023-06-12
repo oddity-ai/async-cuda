@@ -1,0 +1,25 @@
+[package]
+name = "async-cuda-npp"
+description = "Async NVIDIA Performance Primitives for Rust."
+keywords = ["async", "nvidia", "cuda", "gpu", "npp", "2d"]
+categories.workspace = true
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
+
+[dependencies]
+async-cuda-core = { path = "../async-cuda-core" }
+cpp = { workspace = true }
+
+[dev-dependencies]
+futures = { workspace = true }
+tokio = { workspace = true }
+
+[build-dependencies]
+cpp_build = { workspace = true }
+
+[features]
+unstable = []

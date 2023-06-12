@@ -1,0 +1,23 @@
+[package]
+name = "async-cuda-core"
+description = "Async CUDA streams and buffers for Rust."
+keywords = ["async", "nvidia", "cuda", "gpu"]
+categories.workspace = true
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
+
+[dependencies]
+cpp = { workspace = true }
+ndarray = { workspace = true, optional = true }
+once_cell = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+tokio-test = { workspace = true }
+
+[build-dependencies]
+cpp_build = { workspace = true }
