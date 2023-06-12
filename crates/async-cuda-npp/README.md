@@ -3,9 +3,11 @@
 </h1>
 <p align="center">Asynchronous wrapper for the NVIDIA 2D Image And Signal Performance Primitives library.</p>
 <div align="center">
+
 ![Crates.io](https://img.shields.io/crates/v/async-cuda-npp)
 ![Crates.io](https://img.shields.io/crates/l/async-cuda-npp)
 ![docs.rs](https://img.shields.io/docsrs/async-cuda-npp)
+
 </div>
 
 ## ℹ️ Introduction

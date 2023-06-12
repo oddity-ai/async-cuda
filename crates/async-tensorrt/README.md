@@ -3,9 +3,11 @@
 </h1>
 <p align="center">Asynchronous wrapper for TensorRT 8.</p>
 <div align="center">
+
 ![Crates.io](https://img.shields.io/crates/v/async-tensorrt)
 ![Crates.io](https://img.shields.io/crates/l/async-tensorrt)
 ![docs.rs](https://img.shields.io/docsrs/async-tensorrt)
+
 </div>
 
 ## ℹ️ Introduction
