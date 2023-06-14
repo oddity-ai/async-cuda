@@ -23,3 +23,6 @@ cpp_build = { workspace = true }
 
 [features]
 unstable = []
+
+[package.metadata.docs.rs]
+rustc-args = ["--cfg feature=\"docs-only\""]
