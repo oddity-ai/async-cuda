@@ -88,8 +88,8 @@ pub struct ExecutionContext<'engine> {
 impl ExecutionContext<'static> {
     /// Create an execution context from an [`Engine`].
     ///
-    /// This is the owned version of [`new`]. It consumes the engine. In exchange, it produces an
-    /// execution context with a `'static` lifetime.
+    /// This is the owned version of [`ExecutionContext::new()`]. It consumes the engine. In
+    /// exchange, it produces an execution context with a `'static` lifetime.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_cuda_engine.html#ac7a34cf3b59aa633a35f66f07f22a617)
     ///
@@ -105,8 +105,8 @@ impl ExecutionContext<'static> {
 
     /// Create multiple execution contexts from an [`Engine`].
     ///
-    /// This is the owned version of [`new`]. It consumes the engine. In exchange, it produces a set
-    /// of execution contexts with a `'static` lifetime.
+    /// This is the owned version of [`ExecutionContext::new()`]. It consumes the engine. In
+    /// exchange, it produces a set of execution contexts with a `'static` lifetime.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_cuda_engine.html#ac7a34cf3b59aa633a35f66f07f22a617)
     ///

@@ -14,7 +14,7 @@ type Result<T> = std::result::Result<T, crate::error::Error>;
 /// * Images are in RGB format.
 /// * Images are in standard memory order, i.e. HWC.
 ///
-/// This is the batched version of [`crate::resize`].
+/// This is the batched version of [`crate::resize()`].
 ///
 /// # Stability
 ///

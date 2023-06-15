@@ -6,9 +6,9 @@ use crate::region::Region;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 
-/// Synchroneous implementation of [`crate::resize_batch`].
+/// Synchroneous implementation of [`crate::resize_batch()`].
 ///
-/// Refer to [`crate::resize_batch`] for documentation.
+/// Refer to [`crate::resize_batch()`] for documentation.
 pub fn resize_batch(
     inputs_and_outputs: &mut [(
         &async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,

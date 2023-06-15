@@ -6,9 +6,9 @@ use crate::region::Region;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 
-/// Synchroneous implementation of [`crate::resize`].
+/// Synchroneous implementation of [`crate::resize()`].
 ///
-/// Refer to [`crate::resize`] for documentation.
+/// Refer to [`crate::resize()`] for documentation.
 pub fn resize(
     input: &async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,
     input_region: Region,

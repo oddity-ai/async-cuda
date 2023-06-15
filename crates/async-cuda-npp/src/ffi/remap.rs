@@ -5,9 +5,9 @@ use crate::ffi::result;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 
-/// Synchroneous implementation of [`crate::remap`].
+/// Synchroneous implementation of [`crate::remap()`].
 ///
-/// Refer to [`crate::remap`] for documentation.
+/// Refer to [`crate::remap()`] for documentation.
 pub fn remap(
     input: &async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,
     output: &mut async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,

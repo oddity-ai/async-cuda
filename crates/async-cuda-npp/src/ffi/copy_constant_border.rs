@@ -6,9 +6,9 @@ use crate::ffi::result;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 
-/// Synchroneous implementation of [`crate::copy_constant_border`].
+/// Synchroneous implementation of [`crate::copy_constant_border()`].
 ///
-/// Refer to [`crate::copy_constant_border`] for documentation.
+/// Refer to [`crate::copy_constant_border()`] for documentation.
 pub fn copy_constant_border(
     input: &async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,
     output: &mut async_cuda_core::ffi::memory::DeviceBuffer2D<u8>,
