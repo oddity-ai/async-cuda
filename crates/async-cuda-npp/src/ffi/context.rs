@@ -1,7 +1,8 @@
+use cpp::cpp;
+
 use async_cuda_core::Stream;
 
 use crate::ffi::result;
-use crate::ffi::utils::cpp;
 
 /// NPP stream context structure.
 ///

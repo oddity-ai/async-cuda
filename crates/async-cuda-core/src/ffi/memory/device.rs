@@ -1,8 +1,9 @@
+use cpp::cpp;
+
 use crate::ffi::memory::host::HostBuffer;
 use crate::ffi::ptr::DevicePtr;
 use crate::ffi::result;
 use crate::ffi::stream::Stream;
-use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

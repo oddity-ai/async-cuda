@@ -21,3 +21,6 @@ tokio-test = { workspace = true }
 
 [build-dependencies]
 cpp_build = { workspace = true }
+
+[package.metadata.docs.rs]
+rustc-args = ["--cfg", "feature=\"docs-only\""]

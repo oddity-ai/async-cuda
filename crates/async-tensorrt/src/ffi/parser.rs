@@ -1,6 +1,7 @@
+use cpp::cpp;
+
 use crate::error::last_error;
 use crate::ffi::network::NetworkDefinition;
-use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

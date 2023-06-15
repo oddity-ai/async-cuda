@@ -1,4 +1,4 @@
-use crate::ffi::utils::cpp;
+use cpp::cpp;
 
 /// Get last error message produced by TensorRT.
 ///

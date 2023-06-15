@@ -1,5 +1,4 @@
 #![recursion_limit = "256"]
-#![cfg_attr(no_native_deps, allow(unused))]
 
 pub mod builder;
 pub mod engine;

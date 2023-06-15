@@ -1,5 +1,6 @@
+use cpp::cpp;
+
 use crate::ffi::parser::Parser;
-use crate::ffi::utils::cpp;
 
 /// A network definition for input to the builder.
 ///

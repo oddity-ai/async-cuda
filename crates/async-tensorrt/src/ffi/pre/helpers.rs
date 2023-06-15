@@ -1,4 +1,4 @@
-use crate::ffi::utils::cpp;
+use cpp::cpp;
 
 cpp! {{
     // Simple wrapper function for all destroyable TensorRT classes. Their

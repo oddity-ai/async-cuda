@@ -1,7 +1,8 @@
+use cpp::cpp;
+
 use crate::device::DeviceId;
 use crate::device::MemoryInfo;
 use crate::ffi::result;
-use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

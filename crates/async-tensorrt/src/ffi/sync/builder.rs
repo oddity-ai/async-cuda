@@ -1,8 +1,9 @@
+use cpp::cpp;
+
 use crate::ffi::builder_config::BuilderConfig;
 use crate::ffi::memory::HostBuffer;
 use crate::ffi::network::{NetworkDefinition, NetworkDefinitionCreationFlags};
 use crate::ffi::result;
-use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

@@ -1,4 +1,4 @@
-use crate::ffi::utils::cpp;
+use cpp::cpp;
 
 /// Returns the description string for an error code.
 ///
