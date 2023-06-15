@@ -1,4 +1,5 @@
 mod includes;
+mod utils;
 
 pub mod device;
 pub mod error;

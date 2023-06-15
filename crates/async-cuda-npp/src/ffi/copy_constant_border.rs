@@ -1,8 +1,7 @@
-use cpp::cpp;
-
 use crate::constant_border::ConstantBorder;
 use crate::ffi::context::Context;
 use crate::ffi::result;
+use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

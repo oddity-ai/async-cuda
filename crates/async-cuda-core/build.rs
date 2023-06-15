@@ -1,5 +1,6 @@
 #[cfg(unix)]
 fn main() {
+    handle_docs_rs();
     cpp_build::Config::new()
         .include("/usr/local/cuda/include")
         .build("src/lib.rs");
@@ -9,6 +10,7 @@ fn main() {
 
 #[cfg(windows)]
 fn main() {
+    handle_docs_rs();
     let cuda_path = std::env::var("CUDA_PATH").expect("Missing environment variable `CUDA_PATH`.");
     let cuda_path = std::path::Path::new(&cuda_path);
     cpp_build::Config::new()
@@ -19,4 +21,11 @@ fn main() {
         cuda_path.join("lib").join("x64").display()
     );
     println!("cargo:rustc-link-lib=cudart");
+}
+
+fn handle_docs_rs() {
+    if std::env::var("DOCS_RS").is_ok() {
+        println!("cargo:rustc-cfg=no_native_deps");
+        std::process::exit(0);
+    }
 }

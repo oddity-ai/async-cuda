@@ -1,8 +1,7 @@
-use cpp::cpp;
-
 use crate::ffi::memory::HostBuffer;
 use crate::ffi::result;
 use crate::ffi::sync::engine::Engine;
+use crate::ffi::utils::cpp;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 

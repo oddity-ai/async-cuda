@@ -1,4 +1,4 @@
-use cpp::cpp;
+use crate::ffi::utils::cpp;
 
 cpp! {{
     #ifndef ODDITY_FFI_LOGGER

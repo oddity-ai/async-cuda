@@ -1,4 +1,4 @@
-use cpp::cpp;
+use crate::ffi::utils::cpp;
 
 cpp! {{
     #include <cstdint>

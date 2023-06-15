@@ -1,4 +1,4 @@
-use cpp::cpp;
+use crate::ffi::utils::cpp;
 
 pub struct HostBuffer(*mut std::ffi::c_void);
 

@@ -8,6 +8,8 @@ mod pre {
     mod logger;
 }
 
+mod utils;
+
 pub mod builder_config;
 pub mod error;
 pub mod memory;
