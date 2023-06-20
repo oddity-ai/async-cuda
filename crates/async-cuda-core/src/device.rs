@@ -68,7 +68,7 @@ impl Device {
 pub struct MemoryInfo {
     /// Amount of free device memory in bytes.
     pub free: usize,
-    /// Total amount of device memroy in bytes.
+    /// Total amount of device memory in bytes.
     pub total: usize,
 }
 
