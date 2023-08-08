@@ -37,8 +37,8 @@ impl Engine {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_cuda_engine.html#af2018924cbea2fa84808040e60c58405)
     #[inline(always)]
-    pub fn num_io_tensors(&self) -> usize {
-        self.inner.num_io_tensors()
+    pub async fn num_io_tensors(&self) -> usize {
+        Future::new(|| self.inner.num_io_tensors()).await
     }
 
     /// Retrieve the name of an IO tensor.
@@ -49,8 +49,8 @@ impl Engine {
     ///
     /// * `io_tensor_index` - IO tensor index.
     #[inline(always)]
-    pub fn io_tensor_name(&self, io_tensor_index: usize) -> String {
-        self.inner.io_tensor_name(io_tensor_index)
+    pub async fn io_tensor_name(&self, io_tensor_index: usize) -> String {
+        Future::new(|| self.inner.io_tensor_name(io_tensor_index)).await
     }
 
     /// Get the shape of a tensor.
@@ -61,8 +61,8 @@ impl Engine {
     ///
     /// * `tensor_name` - Tensor name.
     #[inline(always)]
-    pub fn tensor_shape(&self, tensor_name: &str) -> Vec<usize> {
-        self.inner.tensor_shape(tensor_name)
+    pub async fn tensor_shape(&self, tensor_name: &str) -> Vec<usize> {
+        Future::new(|| self.inner.tensor_shape(tensor_name)).await
     }
 
     /// Get the IO mode of a tensor.
@@ -73,8 +73,8 @@ impl Engine {
     ///
     /// * `tensor_name` - Tensor name.
     #[inline(always)]
-    pub fn tensor_io_mode(&self, tensor_name: &str) -> TensorIoMode {
-        self.inner.tensor_io_mode(tensor_name)
+    pub async fn tensor_io_mode(&self, tensor_name: &str) -> TensorIoMode {
+        Future::new(|| self.inner.tensor_io_mode(tensor_name)).await
     }
 }
 
@@ -205,13 +205,13 @@ mod tests {
     #[tokio::test]
     async fn test_engine_tensor_info() {
         let engine = simple_engine!();
-        assert_eq!(engine.num_io_tensors(), 2);
-        assert_eq!(engine.io_tensor_name(0), "X");
-        assert_eq!(engine.io_tensor_name(1), "Y");
-        assert_eq!(engine.tensor_io_mode("X"), TensorIoMode::Input);
-        assert_eq!(engine.tensor_io_mode("Y"), TensorIoMode::Output);
-        assert_eq!(engine.tensor_shape("X"), &[1, 2]);
-        assert_eq!(engine.tensor_shape("Y"), &[2, 3]);
+        assert_eq!(engine.num_io_tensors().await, 2);
+        assert_eq!(engine.io_tensor_name(0).await, "X");
+        assert_eq!(engine.io_tensor_name(1).await, "Y");
+        assert_eq!(engine.tensor_io_mode("X").await, TensorIoMode::Input);
+        assert_eq!(engine.tensor_io_mode("Y").await, TensorIoMode::Output);
+        assert_eq!(engine.tensor_shape("X").await, &[1, 2]);
+        assert_eq!(engine.tensor_shape("Y").await, &[2, 3]);
     }
 
     #[tokio::test]

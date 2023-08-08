@@ -37,8 +37,8 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a68a8b59fbf86e42762b7087e6ffe6fb4)
     #[inline(always)]
-    pub fn add_optimization_profile(&mut self) -> Result<()> {
-        self.inner.add_optimization_profile()
+    pub async fn add_optimization_profile(&mut self) -> Result<()> {
+        Future::new(|| self.inner.add_optimization_profile()).await
     }
 
     /// Create a new optimization profile.
@@ -54,8 +54,9 @@ impl Builder {
     /// may or may not actually affect the building process later.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a68a8b59fbf86e42762b7087e6ffe6fb4)
-    pub fn with_optimization_profile(mut self) -> Result<Self> {
-        self.add_optimization_profile()?;
+    #[inline(always)]
+    pub async fn with_optimization_profile(mut self) -> Result<Self> {
+        self.add_optimization_profile().await?;
         Ok(self)
     }
 
@@ -67,8 +68,8 @@ impl Builder {
     ///
     /// A [`BuilderConfig`] that can later be passed to `build_serialized_network`.
     #[inline(always)]
-    pub fn config(&mut self) -> BuilderConfig {
-        self.inner.config()
+    pub async fn config(&mut self) -> BuilderConfig {
+        Future::new(|| self.inner.config()).await
     }
 
     /// Create a network definition object.
@@ -79,11 +80,11 @@ impl Builder {
     ///
     /// * `flags` - Flags for specifying network properties.
     #[inline(always)]
-    pub fn network_definition(
+    pub async fn network_definition(
         &mut self,
         flags: NetworkDefinitionCreationFlags,
     ) -> NetworkDefinition {
-        self.inner.network_definition(flags)
+        Future::new(|| self.inner.network_definition(flags)).await
     }
 
     /// Builds and serializes a network for the provided [`crate::ffi::network::NetworkDefinition`]
@@ -111,15 +112,15 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#ab09433c57e3ef02f7aad672ec4235ea4)
     #[inline(always)]
-    pub fn platform_has_fast_int8(&self) -> bool {
-        self.inner.platform_has_fast_int8()
+    pub async fn platform_has_fast_int8(&self) -> bool {
+        Future::new(|| self.inner.platform_has_fast_int8()).await
     }
 
     /// Determine whether the platform has fast native FP16.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a6e42dd3ecb449ba54ffb823685a7ac47)
     #[inline(always)]
-    pub fn platform_has_fast_fp16(&self) -> bool {
-        self.inner.platform_has_fast_fp16()
+    pub async fn platform_has_fast_fp16(&self) -> bool {
+        Future::new(|| self.inner.platform_has_fast_fp16()).await
     }
 }

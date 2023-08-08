@@ -135,7 +135,9 @@ mod tests {
     async fn test_parser_parses_onnx_file() {
         let simple_onnx_file = simple_onnx_file!();
         let mut builder = Builder::new().await;
-        let network = builder.network_definition(NetworkDefinitionCreationFlags::ExplicitBatchSize);
+        let network = builder
+            .network_definition(NetworkDefinitionCreationFlags::ExplicitBatchSize)
+            .await;
         assert!(
             Parser::parse_network_definition_from_file(network, &simple_onnx_file.path()).is_ok()
         );
