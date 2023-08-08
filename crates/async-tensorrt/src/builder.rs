@@ -19,7 +19,7 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/namespacenvinfer1_1_1anonymous__namespace_02_nv_infer_8h_03.html)
     pub async fn new() -> Self {
-        let inner = Future::new(|| InnerBuilder::new()).await;
+        let inner = Future::new(InnerBuilder::new).await;
         Builder { inner }
     }
 

@@ -16,7 +16,7 @@ pub struct Runtime {
 impl Runtime {
     /// Create a new [`Runtime`].
     pub async fn new() -> Self {
-        let inner = Future::new(|| InnerRuntime::new()).await;
+        let inner = Future::new(InnerRuntime::new).await;
         Self { inner }
     }
 
