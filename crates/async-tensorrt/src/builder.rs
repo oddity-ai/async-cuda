@@ -18,10 +18,9 @@ impl Builder {
     /// Create a new [`Builder`].
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/namespacenvinfer1_1_1anonymous__namespace_02_nv_infer_8h_03.html)
-    pub fn new() -> Self {
-        Builder {
-            inner: InnerBuilder::new(),
-        }
+    pub async fn new() -> Self {
+        let inner = Future::new(|| InnerBuilder::new()).await;
+        Builder { inner }
     }
 
     /// Create a new optimization profile.
@@ -122,11 +121,5 @@ impl Builder {
     #[inline(always)]
     pub fn platform_has_fast_fp16(&self) -> bool {
         self.inner.platform_has_fast_fp16()
-    }
-}
-
-impl Default for Builder {
-    fn default() -> Self {
-        Builder::new()
     }
 }

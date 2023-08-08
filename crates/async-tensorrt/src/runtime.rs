@@ -15,10 +15,9 @@ pub struct Runtime {
 
 impl Runtime {
     /// Create a new [`Runtime`].
-    pub fn new() -> Self {
-        Self {
-            inner: InnerRuntime::new(),
-        }
+    pub async fn new() -> Self {
+        let inner = Future::new(|| InnerRuntime::new()).await;
+        Self { inner }
     }
 
     /// Deserialize engine from a plan (a [`HostBuffer`]).
@@ -51,11 +50,5 @@ impl Runtime {
                 .map(Engine::from_inner)
         })
         .await
-    }
-}
-
-impl Default for Runtime {
-    fn default() -> Self {
-        Runtime::new()
     }
 }
