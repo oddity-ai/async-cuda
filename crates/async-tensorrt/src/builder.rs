@@ -112,15 +112,15 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#ab09433c57e3ef02f7aad672ec4235ea4)
     #[inline(always)]
-    pub async fn platform_has_fast_int8(&self) -> bool {
-        Future::new(|| self.inner.platform_has_fast_int8()).await
+    pub fn platform_has_fast_int8(&self) -> bool {
+        self.inner.platform_has_fast_int8()
     }
 
     /// Determine whether the platform has fast native FP16.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a6e42dd3ecb449ba54ffb823685a7ac47)
     #[inline(always)]
-    pub async fn platform_has_fast_fp16(&self) -> bool {
-        Future::new(|| self.inner.platform_has_fast_fp16()).await
+    pub fn platform_has_fast_fp16(&self) -> bool {
+        self.inner.platform_has_fast_fp16()
     }
 }
