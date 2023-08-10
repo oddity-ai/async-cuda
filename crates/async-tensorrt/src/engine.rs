@@ -29,16 +29,17 @@ impl Engine {
     /// # Return value
     ///
     /// A [`HostBuffer`] that contains the serialized engine.
-    pub async fn serialize(&self) -> Result<HostBuffer> {
-        Future::new(move || self.inner.serialize()).await
+    #[inline(always)]
+    pub fn serialize(&self) -> Result<HostBuffer> {
+        self.inner.serialize()
     }
 
     /// Get the number of IO tensors.
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_cuda_engine.html#af2018924cbea2fa84808040e60c58405)
     #[inline(always)]
-    pub async fn num_io_tensors(&self) -> usize {
-        Future::new(|| self.inner.num_io_tensors()).await
+    pub fn num_io_tensors(&self) -> usize {
+        self.inner.num_io_tensors()
     }
 
     /// Retrieve the name of an IO tensor.
@@ -49,8 +50,8 @@ impl Engine {
     ///
     /// * `io_tensor_index` - IO tensor index.
     #[inline(always)]
-    pub async fn io_tensor_name(&self, io_tensor_index: usize) -> String {
-        Future::new(|| self.inner.io_tensor_name(io_tensor_index)).await
+    pub fn io_tensor_name(&self, io_tensor_index: usize) -> String {
+        self.inner.io_tensor_name(io_tensor_index)
     }
 
     /// Get the shape of a tensor.
@@ -61,8 +62,8 @@ impl Engine {
     ///
     /// * `tensor_name` - Tensor name.
     #[inline(always)]
-    pub async fn tensor_shape(&self, tensor_name: &str) -> Vec<usize> {
-        Future::new(|| self.inner.tensor_shape(tensor_name)).await
+    pub fn tensor_shape(&self, tensor_name: &str) -> Vec<usize> {
+        self.inner.tensor_shape(tensor_name)
     }
 
     /// Get the IO mode of a tensor.
@@ -73,8 +74,8 @@ impl Engine {
     ///
     /// * `tensor_name` - Tensor name.
     #[inline(always)]
-    pub async fn tensor_io_mode(&self, tensor_name: &str) -> TensorIoMode {
-        Future::new(|| self.inner.tensor_io_mode(tensor_name)).await
+    pub fn tensor_io_mode(&self, tensor_name: &str) -> TensorIoMode {
+        self.inner.tensor_io_mode(tensor_name)
     }
 }
 
@@ -192,7 +193,7 @@ mod tests {
     #[tokio::test]
     async fn test_engine_serialize() {
         let engine = simple_engine!();
-        let serialized_engine = engine.serialize().await.unwrap();
+        let serialized_engine = engine.serialize().unwrap();
         let serialized_engine_bytes = serialized_engine.as_bytes();
         assert!(serialized_engine_bytes.len() > 1800);
         assert!(serialized_engine_bytes.len() < 2500);
@@ -205,13 +206,13 @@ mod tests {
     #[tokio::test]
     async fn test_engine_tensor_info() {
         let engine = simple_engine!();
-        assert_eq!(engine.num_io_tensors().await, 2);
-        assert_eq!(engine.io_tensor_name(0).await, "X");
-        assert_eq!(engine.io_tensor_name(1).await, "Y");
-        assert_eq!(engine.tensor_io_mode("X").await, TensorIoMode::Input);
-        assert_eq!(engine.tensor_io_mode("Y").await, TensorIoMode::Output);
-        assert_eq!(engine.tensor_shape("X").await, &[1, 2]);
-        assert_eq!(engine.tensor_shape("Y").await, &[2, 3]);
+        assert_eq!(engine.num_io_tensors(), 2);
+        assert_eq!(engine.io_tensor_name(0), "X");
+        assert_eq!(engine.io_tensor_name(1), "Y");
+        assert_eq!(engine.tensor_io_mode("X"), TensorIoMode::Input);
+        assert_eq!(engine.tensor_io_mode("Y"), TensorIoMode::Output);
+        assert_eq!(engine.tensor_shape("X"), &[1, 2]);
+        assert_eq!(engine.tensor_shape("Y"), &[2, 3]);
     }
 
     #[tokio::test]

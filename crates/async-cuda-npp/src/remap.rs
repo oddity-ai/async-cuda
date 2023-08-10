@@ -128,7 +128,7 @@ mod tests {
         let map_x = DeviceBuffer2D::<f32>::new(100, 100, 1).await;
         let map_y = DeviceBuffer2D::<f32>::new(100, 100, 1).await;
         let mut output = DeviceBuffer2D::<u8>::new(100, 100, 3).await;
-        remap(&input, &mut output, &map_x, &map_y, &Stream::null())
+        remap(&input, &mut output, &map_x, &map_y, &Stream::null().await)
             .await
             .unwrap();
     }
@@ -140,7 +140,7 @@ mod tests {
         let map_x = DeviceBuffer2D::<f32>::new(100, 100, 1).await;
         let map_y = DeviceBuffer2D::<f32>::new(100, 100, 1).await;
         let mut output = DeviceBuffer2D::<u8>::new(100, 100, 2).await;
-        remap(&input, &mut output, &map_x, &map_y, &Stream::null())
+        remap(&input, &mut output, &map_x, &map_y, &Stream::null().await)
             .await
             .unwrap();
     }
@@ -152,7 +152,7 @@ mod tests {
         let map_x = DeviceBuffer2D::<f32>::new(100, 100, 2).await;
         let map_y = DeviceBuffer2D::<f32>::new(100, 100, 3).await;
         let mut output = DeviceBuffer2D::<u8>::new(100, 100, 3).await;
-        remap(&input, &mut output, &map_x, &map_y, &Stream::null())
+        remap(&input, &mut output, &map_x, &map_y, &Stream::null().await)
             .await
             .unwrap();
     }
@@ -164,7 +164,7 @@ mod tests {
         let map_x = DeviceBuffer2D::<f32>::new(120, 100, 1).await;
         let map_y = DeviceBuffer2D::<f32>::new(120, 100, 1).await;
         let mut output = DeviceBuffer2D::<u8>::new(100, 100, 3).await;
-        remap(&input, &mut output, &map_x, &map_y, &Stream::null())
+        remap(&input, &mut output, &map_x, &map_y, &Stream::null().await)
             .await
             .unwrap();
     }
@@ -176,7 +176,7 @@ mod tests {
         let map_x = DeviceBuffer2D::<f32>::new(100, 120, 1).await;
         let map_y = DeviceBuffer2D::<f32>::new(100, 120, 1).await;
         let mut output = DeviceBuffer2D::<u8>::new(100, 100, 3).await;
-        remap(&input, &mut output, &map_x, &map_y, &Stream::null())
+        remap(&input, &mut output, &map_x, &map_y, &Stream::null().await)
             .await
             .unwrap();
     }

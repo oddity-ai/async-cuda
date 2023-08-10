@@ -35,8 +35,8 @@ impl Context {
         let mut raw = std::ptr::null_mut();
         let raw_ptr = std::ptr::addr_of_mut!(raw);
         // SAFETY:
-        // * No need to execute this on the runtime since this call just initializes the
-        //   `NppStreamContext` and is stateless for all intents and purposes.
+        // * Must call this function on runtime since `nppGetStreamContext` needs the correct thread
+        //   locals to determine current device and other context settings.
         // * We can store a reference to the stream in `NppStreamContext` as long as we make sure
         //   `NppStreamContext` cannot outlive the stream, which we can guarantee because we take
         //   ownership of the stream.
@@ -76,8 +76,8 @@ impl Context {
             let raw_ptr = std::ptr::addr_of_mut!(raw);
             let stream_ptr = stream.inner().as_internal().as_ptr();
             // SAFETY:
-            // * No need to execute this on the runtime since this call just initializes the
-            //   `NppStreamContext` and is stateless for all intents and purposes.
+            // * Must call this function on runtime since `nppGetStreamContext` needs the correct
+            //   thread locals to determine current device and other context settings.
             // * We can store a reference to the stream in `NppStreamContext` as long as we make
             //   sure `NppStreamContext` cannot outlive the stream, which we can guarantee because
             //   we take ownership of the stream.

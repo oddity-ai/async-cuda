@@ -98,7 +98,7 @@ mod tests {
             &input,
             &mut output,
             &ConstantBorder::black(10, 20),
-            &Stream::null(),
+            &Stream::null().await,
         )
         .await
         .unwrap();
@@ -113,7 +113,7 @@ mod tests {
             &input,
             &mut output,
             &ConstantBorder::black(10, 20),
-            &Stream::null(),
+            &Stream::null().await,
         )
         .await
         .unwrap();

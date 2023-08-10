@@ -27,9 +27,10 @@ impl Stream {
     ///
     /// This type is a wrapper around the actual CUDA stream type: [`async_cuda_core::Stream`].
     #[inline]
-    pub fn null() -> Self {
+    pub async fn null() -> Self {
+        let context = Future::new(Context::from_null_stream).await;
         Self {
-            context: Arc::new(Context::from_null_stream()),
+            context: Arc::new(context),
         }
     }
 
@@ -84,7 +85,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_null() {
-        let stream = Stream::null();
+        let stream = Stream::null().await;
         assert!(!stream.to_context().as_ptr().is_null());
         // SAFETY: This works because we know that the first field of the underlying
         // `NppStreamContext` struct used internally is `hStream`, which should refer to the wrapped

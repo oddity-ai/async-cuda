@@ -37,8 +37,8 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a68a8b59fbf86e42762b7087e6ffe6fb4)
     #[inline(always)]
-    pub async fn add_optimization_profile(&mut self) -> Result<()> {
-        Future::new(|| self.inner.add_optimization_profile()).await
+    pub fn add_optimization_profile(&mut self) -> Result<()> {
+        self.inner.add_optimization_profile()
     }
 
     /// Create a new optimization profile.
@@ -55,8 +55,8 @@ impl Builder {
     ///
     /// [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html#a68a8b59fbf86e42762b7087e6ffe6fb4)
     #[inline(always)]
-    pub async fn with_optimization_profile(mut self) -> Result<Self> {
-        self.add_optimization_profile().await?;
+    pub fn with_optimization_profile(mut self) -> Result<Self> {
+        self.add_optimization_profile()?;
         Ok(self)
     }
 
@@ -80,11 +80,11 @@ impl Builder {
     ///
     /// * `flags` - Flags for specifying network properties.
     #[inline(always)]
-    pub async fn network_definition(
+    pub fn network_definition(
         &mut self,
         flags: NetworkDefinitionCreationFlags,
     ) -> NetworkDefinition {
-        Future::new(|| self.inner.network_definition(flags)).await
+        self.inner.network_definition(flags)
     }
 
     /// Builds and serializes a network for the provided [`crate::ffi::network::NetworkDefinition`]

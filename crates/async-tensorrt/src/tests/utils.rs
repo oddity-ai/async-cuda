@@ -4,11 +4,9 @@ macro_rules! simple_network {
         let mut builder = $crate::Builder::new()
             .await
             .with_optimization_profile()
-            .await
             .unwrap();
-        let network = builder
-            .network_definition($crate::NetworkDefinitionCreationFlags::ExplicitBatchSize)
-            .await;
+        let network =
+            builder.network_definition($crate::NetworkDefinitionCreationFlags::ExplicitBatchSize);
         let network =
             $crate::Parser::parse_network_definition_from_file(network, &simple_onnx_file.path())
                 .unwrap();

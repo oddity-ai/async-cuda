@@ -54,7 +54,7 @@ impl Parser {
     /// # Arguments
     ///
     /// * `path` - Path to file to parse.
-    pub fn parse_from_file(&mut self, path: &impl AsRef<std::path::Path>) -> Result<()> {
+    fn parse_from_file(&mut self, path: &impl AsRef<std::path::Path>) -> Result<()> {
         let internal = self.as_mut_ptr();
         let path_ffi = std::ffi::CString::new(path.as_ref().as_os_str().to_str().unwrap()).unwrap();
         let path_ptr = path_ffi.as_ptr();
@@ -135,9 +135,7 @@ mod tests {
     async fn test_parser_parses_onnx_file() {
         let simple_onnx_file = simple_onnx_file!();
         let mut builder = Builder::new().await;
-        let network = builder
-            .network_definition(NetworkDefinitionCreationFlags::ExplicitBatchSize)
-            .await;
+        let network = builder.network_definition(NetworkDefinitionCreationFlags::ExplicitBatchSize);
         assert!(
             Parser::parse_network_definition_from_file(network, &simple_onnx_file.path()).is_ok()
         );

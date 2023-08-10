@@ -268,7 +268,7 @@ mod tests {
             &mut inputs_and_outputs_ref,
             Region::Full,
             Region::Full,
-            &Stream::null(),
+            &Stream::null().await,
         )
         .await
         .unwrap();

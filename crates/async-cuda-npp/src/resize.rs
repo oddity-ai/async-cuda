@@ -156,7 +156,7 @@ mod tests {
             Region::Full,
             &mut output,
             Region::Full,
-            &Stream::null(),
+            &Stream::null().await,
         )
         .await
         .unwrap();
@@ -172,7 +172,7 @@ mod tests {
             Region::Full,
             &mut output,
             Region::Full,
-            &Stream::null(),
+            &Stream::null().await,
         )
         .await
         .unwrap();
