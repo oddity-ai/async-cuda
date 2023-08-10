@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use async_cuda_core::runtime::Future;
+
 use crate::ffi::context::Context;
 
 /// Represents an NPP stream.
@@ -27,7 +29,7 @@ impl Stream {
     #[inline]
     pub fn null() -> Self {
         Self {
-            context: Arc::new(Context::from_stream(async_cuda_core::Stream::null())),
+            context: Arc::new(Context::from_null_stream()),
         }
     }
 
@@ -36,8 +38,10 @@ impl Stream {
     /// This type is a wrapper around the actual CUDA stream type: [`async_cuda_core::Stream`].
     #[inline]
     pub async fn new() -> std::result::Result<Self, async_cuda_core::Error> {
+        let stream = async_cuda_core::Stream::new().await?;
+        let context = Future::new(move || Context::from_stream(stream)).await;
         Ok(Self {
-            context: Arc::new(Context::from_stream(async_cuda_core::Stream::new().await?)),
+            context: Arc::new(context),
         })
     }
 
