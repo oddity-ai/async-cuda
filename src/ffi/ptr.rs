@@ -1,5 +1,3 @@
-use crate::device::DeviceId;
-
 /// Represents a device-local pointer. Pointers qualify as device-local if they refer to memory that
 /// lives on the device, and not on the host.
 ///

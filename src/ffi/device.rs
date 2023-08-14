@@ -31,7 +31,7 @@ impl Device {
         let mut id: i32 = 0;
         let id_ptr = std::ptr::addr_of_mut!(id);
         let ret = cpp!(unsafe [
-            id_ptr as "int"
+            id_ptr as "int*"
         ] -> i32 as "int" {
             return cudaGetDevice(id_ptr);
         });
