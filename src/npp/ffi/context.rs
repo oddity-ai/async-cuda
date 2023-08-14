@@ -1,5 +1,6 @@
 use cpp::cpp;
 
+use crate::ffi::device::Device;
 use crate::npp::ffi::result;
 use crate::stream::Stream;
 
@@ -74,6 +75,7 @@ impl Context {
             let mut raw = std::ptr::null_mut();
             let raw_ptr = std::ptr::addr_of_mut!(raw);
             let stream_ptr = stream.inner().as_internal().as_ptr();
+            let device_id = stream.inner().device();
             // SAFETY:
             // * Must call this function on runtime since `nppGetStreamContext` needs the correct
             //   thread locals to determine current device and other context settings.
@@ -82,12 +84,14 @@ impl Context {
             //   we take ownership of the stream.
             let ret = cpp!(unsafe [
                 raw_ptr as "void**",
-                stream_ptr as "void*"
+                stream_ptr as "void*",
+                device_id as "int"
             ] -> i32 as "std::int32_t" {
                 NppStreamContext* stream_context = new NppStreamContext();
                 NppStatus ret = nppGetStreamContext(stream_context);
                 if (ret == NPP_SUCCESS) {
                     stream_context->hStream = (cudaStream_t) stream_ptr;
+                    stream_context->nCudaDeviceId = device_id;
                     *raw_ptr = (void*) stream_context;
                 }
                 return ret;
@@ -110,6 +114,10 @@ impl Context {
 
     /// Delete the context.
     ///
+    /// # Panics
+    ///
+    /// This function panics if binding to the corresponding device fails.
+    ///
     /// # Safety
     ///
     /// The context may not be used after this function is called, except for being dropped.
@@ -117,6 +125,8 @@ impl Context {
         if self.raw.is_null() {
             return;
         }
+
+        let _device_guard = Device::bind_or_panic(self.stream.inner().device());
 
         let raw = self.raw;
         self.raw = std::ptr::null_mut();

@@ -1,5 +1,7 @@
 use cpp::cpp;
 
+use crate::device::DeviceId;
+use crate::ffi::device::Device;
 use crate::ffi::ptr::DevicePtr;
 use crate::ffi::result;
 
@@ -10,6 +12,7 @@ type Result<T> = std::result::Result<T, crate::error::Error>;
 /// Refer to [`crate::Stream`] for documentation.
 pub struct Stream {
     internal: DevicePtr,
+    device: DeviceId,
 }
 
 /// Implements [`Send`] for [`Stream`].
@@ -28,17 +31,20 @@ unsafe impl Sync for Stream {}
 
 impl Stream {
     pub fn null() -> Self {
+        let device =
+            Device::get().unwrap_or_else(|err| panic!("could not determine current device: {err}"));
         Self {
             // SAFETY: This is safe because a null pointer for stream indicates the default
             // stream in CUDA and all functions accept this.
             internal: unsafe { DevicePtr::null() },
+            device,
         }
     }
 
     pub fn new() -> Result<Self> {
+        let device = Device::get()?;
         let mut ptr: *mut std::ffi::c_void = std::ptr::null_mut();
         let ptr_ptr = std::ptr::addr_of_mut!(ptr);
-
         let ret = cpp!(unsafe [
             ptr_ptr as "void**"
         ] -> i32 as "std::int32_t" {
@@ -47,12 +53,14 @@ impl Stream {
         result!(
             ret,
             Stream {
-                internal: ptr.into()
+                internal: DevicePtr::from_addr(ptr),
+                device,
             }
         )
     }
 
     pub fn synchronize(&self) -> Result<()> {
+        let _device_guard = Device::bind(self.device)?;
         let ptr = self.internal.as_ptr();
         let ret = cpp!(unsafe [
             ptr as "void*"
@@ -63,13 +71,12 @@ impl Stream {
     }
 
     pub fn add_callback(&self, f: impl FnOnce() + Send) -> Result<()> {
+        let _device_guard = Device::bind(self.device)?;
         let ptr = self.internal.as_ptr();
-
         let f_boxed = Box::new(f) as Box<dyn FnOnce()>;
         let f_boxed2 = Box::new(f_boxed);
         let f_boxed2_ptr = Box::into_raw(f_boxed2);
         let user_data = f_boxed2_ptr as *mut std::ffi::c_void;
-
         let ret = cpp!(unsafe [
             ptr as "void*",
             user_data as "void*"
@@ -81,7 +88,6 @@ impl Stream {
                 0
             );
         });
-
         result!(ret)
     }
 
@@ -97,7 +103,17 @@ impl Stream {
         &mut self.internal
     }
 
+    /// Get corresponding device as [`DeviceId`].
+    #[inline(always)]
+    pub fn device(&self) -> DeviceId {
+        self.device
+    }
+
     /// Destroy stream.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if binding to the corresponding device fails.
     ///
     /// # Safety
     ///
@@ -106,6 +122,8 @@ impl Stream {
         if self.internal.is_null() {
             return;
         }
+
+        let _device_guard = Device::bind_or_panic(self.device);
 
         // SAFETY: This will cause `self` to hold a null pointer. It is safe here because we don't
         // use the object after this.

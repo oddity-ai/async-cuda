@@ -15,7 +15,7 @@ pub async fn num_devices() -> Result<usize> {
 }
 
 /// CUDA device ID.
-pub type DeviceId = usize;
+pub type DeviceId = i32;
 
 /// CUDA device.
 pub struct Device;

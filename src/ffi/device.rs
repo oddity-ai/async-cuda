@@ -31,21 +31,31 @@ impl Device {
         let mut id: i32 = 0;
         let id_ptr = std::ptr::addr_of_mut!(id);
         let ret = cpp!(unsafe [
-            id_ptr as "std::int32_t*"
-        ] -> i32 as "std::int32_t" {
+            id_ptr as "int"
+        ] -> i32 as "int" {
             return cudaGetDevice(id_ptr);
         });
-        result!(ret, id as DeviceId)
+        result!(ret, id)
     }
 
     pub fn set(id: DeviceId) -> Result<()> {
-        let id = id as i32;
         let ret = cpp!(unsafe [
-            id as "std::int32_t"
-        ] -> i32 as "std::int32_t" {
+            id as "int"
+        ] -> i32 as "int" {
             return cudaSetDevice(id);
         });
         result!(ret)
+    }
+
+    #[inline]
+    pub fn bind(id: DeviceId) -> Result<DeviceGuard> {
+        DeviceGuard::activate(id)
+    }
+
+    #[inline]
+    pub fn bind_or_panic(id: DeviceId) -> DeviceGuard {
+        DeviceGuard::activate(id)
+            .unwrap_or_else(|err| panic!("failed to bind to device {}: {}", id, err))
     }
 
     pub fn synchronize() -> Result<()> {
@@ -71,6 +81,36 @@ impl Device {
     }
 }
 
+/// Guard to keep specified active for the duration of the surrounding scope.
+pub struct DeviceGuard {
+    pub active: DeviceId,
+    pub previous: DeviceId,
+}
+
+impl DeviceGuard {
+    /// Create [`DeviceGuard`] and activate it.
+    ///
+    /// # Arguments
+    ///
+    /// * `device` - Device to activate.
+    fn activate(device: DeviceId) -> Result<DeviceGuard> {
+        let previous = Device::get()?;
+        Device::set(device)?;
+        Ok(Self {
+            active: device,
+            previous,
+        })
+    }
+}
+
+impl Drop for DeviceGuard {
+    fn drop(&mut self) {
+        Device::set(self.previous).unwrap_or_else(|err| {
+            panic!("failed to set device ordinal: {} ({})", self.previous, err)
+        });
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -89,6 +129,11 @@ mod tests {
     fn test_set_device() {
         assert!(Device::set(0).is_ok());
         assert!(matches!(Device::get(), Ok(0)));
+    }
+
+    #[test]
+    fn test_bind_device() {
+        assert!(Device::bind(0).is_ok());
     }
 
     #[test]

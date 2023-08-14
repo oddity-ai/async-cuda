@@ -1,5 +1,7 @@
 use cpp::cpp;
 
+use crate::device::DeviceId;
+use crate::ffi::device::Device;
 use crate::ffi::memory::device::DeviceBuffer;
 use crate::ffi::ptr::DevicePtr;
 use crate::ffi::result;
@@ -13,6 +15,7 @@ type Result<T> = std::result::Result<T, crate::error::Error>;
 pub struct HostBuffer<T: Copy> {
     pub num_elements: usize,
     internal: DevicePtr,
+    device: DeviceId,
     _phantom: std::marker::PhantomData<T>,
 }
 
@@ -32,6 +35,8 @@ unsafe impl<T: Copy> Sync for HostBuffer<T> {}
 
 impl<T: Copy> HostBuffer<T> {
     pub fn new(num_elements: usize) -> Self {
+        let device =
+            Device::get().unwrap_or_else(|err| panic!("could not determine current device: {err}"));
         let mut ptr: *mut std::ffi::c_void = std::ptr::null_mut();
         let ptr_ptr = std::ptr::addr_of_mut!(ptr);
         let size = num_elements * std::mem::size_of::<T>();
@@ -41,9 +46,10 @@ impl<T: Copy> HostBuffer<T> {
         ] -> i32 as "std::int32_t" {
             return cudaMallocHost(ptr_ptr, size);
         });
-        match result!(ret, ptr.into()) {
+        match result!(ret, DevicePtr::from_addr(ptr)) {
             Ok(internal) => Self {
                 internal,
+                device,
                 num_elements,
                 _phantom: Default::default(),
             },
@@ -153,6 +159,10 @@ impl<T: Copy> HostBuffer<T> {
 
     /// Release the buffer memory.
     ///
+    /// # Panics
+    ///
+    /// This function panics if binding to the corresponding device fails.
+    ///
     /// # Safety
     ///
     /// The buffer may not be used after this function is called, except for being dropped.
@@ -160,6 +170,8 @@ impl<T: Copy> HostBuffer<T> {
         if self.internal.is_null() {
             return;
         }
+
+        let _device_guard = Device::bind_or_panic(self.device);
 
         // SAFETY: Safe because we won't use the pointer after this.
         let mut internal = unsafe { self.internal.take() };

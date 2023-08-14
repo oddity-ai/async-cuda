@@ -1,3 +1,5 @@
+use crate::device::DeviceId;
+
 /// Represents a device-local pointer. Pointers qualify as device-local if they refer to memory that
 /// lives on the device, and not on the host.
 ///
@@ -9,14 +11,20 @@
 /// undefined behavior.
 ///
 /// Use the `unsafe` function `Ptr::null` to create a null pointer in cases where usage is safe.
-pub struct DevicePtr(*mut std::ffi::c_void);
+pub struct DevicePtr {
+    addr: *mut std::ffi::c_void,
+}
 
 impl DevicePtr {
-    /// Create from raw pointer.
+    /// Create from device address.
+    ///
+    /// # Arguments
+    ///
+    /// * `addr` - Address of pointer.
     #[inline]
-    pub fn from_raw(raw: *mut std::ffi::c_void) -> Self {
-        if !raw.is_null() {
-            DevicePtr(raw)
+    pub fn from_addr(addr: *mut std::ffi::c_void) -> Self {
+        if !addr.is_null() {
+            DevicePtr { addr }
         } else {
             panic!("unexpected null pointer");
         }
@@ -31,27 +39,27 @@ impl DevicePtr {
     /// in stream-related operations.
     #[inline]
     pub unsafe fn null() -> Self {
-        DevicePtr(std::ptr::null_mut())
+        DevicePtr {
+            addr: std::ptr::null_mut(),
+        }
     }
 
     /// Whether or not the device pointer is a null pointer.
     #[inline]
     pub fn is_null(&self) -> bool {
-        self.0.is_null()
+        self.addr.is_null()
     }
 
     /// Get the readonly pointer value.
     #[inline(always)]
     pub fn as_ptr(&self) -> *const std::ffi::c_void {
-        let DevicePtr(ptr) = *self;
-        ptr as *const std::ffi::c_void
+        self.addr as *const std::ffi::c_void
     }
 
     /// Get the mutable pointer value.
     #[inline(always)]
     pub fn as_mut_ptr(&mut self) -> *mut std::ffi::c_void {
-        let DevicePtr(ptr) = *self;
-        ptr
+        self.addr
     }
 
     /// Take the pointer from this wrapper and replace it with a null pointer.
@@ -78,7 +86,7 @@ impl DevicePtr {
     ///         // SAFETY: This is safe because `self` and `self.internal`
     ///         // are not used beyond this unsafe block.
     ///         let ptr = unsafe {
-    ///             self.internal.take_raw();
+    ///             self.internal.take();
     ///         };
     ///         // Propertly deallocate the pointer here and do *NOT* use
     ///         // use `self` for anything!
@@ -87,19 +95,16 @@ impl DevicePtr {
     /// ```
     #[inline]
     pub unsafe fn take(&mut self) -> DevicePtr {
-        DevicePtr(std::mem::replace(&mut self.0, std::ptr::null_mut()))
-    }
-}
-
-impl From<*mut std::ffi::c_void> for DevicePtr {
-    fn from(value: *mut std::ffi::c_void) -> Self {
-        DevicePtr(value)
+        DevicePtr {
+            // sets `self.addr` to NULL, puts addr in new device ptr
+            addr: std::mem::replace(&mut self.addr, std::ptr::null_mut()),
+        }
     }
 }
 
 impl std::fmt::Display for DevicePtr {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:?}", self.0)
+        write!(f, "{:?}", self.addr)
     }
 }
 
@@ -110,14 +115,14 @@ mod tests {
     #[test]
     fn test_it_holds_on() {
         let fake = 0xffffffff as *mut std::ffi::c_void;
-        let ptr = DevicePtr::from_raw(fake);
+        let ptr = DevicePtr::from_addr(fake);
         assert_eq!(ptr.as_ptr(), 0xffffffff as *const std::ffi::c_void);
     }
 
     #[test]
     #[should_panic]
     fn test_it_panics_when_null() {
-        let _ = DevicePtr::from_raw(std::ptr::null_mut());
+        let _ = DevicePtr::from_addr(std::ptr::null_mut());
     }
 
     #[test]
@@ -128,9 +133,9 @@ mod tests {
     }
 
     #[test]
-    fn test_take_raw() {
+    fn test_take() {
         let fake = 0xffffffff as *mut std::ffi::c_void;
-        let mut ptr = DevicePtr::from_raw(fake);
+        let mut ptr = DevicePtr::from_addr(fake);
         assert_eq!(
             unsafe { ptr.take().as_ptr() },
             0xffffffff as *const std::ffi::c_void,
