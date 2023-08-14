@@ -192,15 +192,18 @@ impl<T: Copy> DeviceBuffer2D<T> {
         &self.internal
     }
 
-    /// Get readonly reference to internal [`DevicePtr`].
+    /// Get mutable reference to internal [`DevicePtr`].
     #[inline(always)]
     pub fn as_mut_internal(&mut self) -> &mut DevicePtr {
         &mut self.internal
     }
-}
 
-impl<T: Copy> Drop for DeviceBuffer2D<T> {
-    fn drop(&mut self) {
+    /// Release the buffer memory.
+    ///
+    /// # Safety
+    ///
+    /// The buffer may not be used after this function is called, except for being dropped.
+    pub unsafe fn free(&mut self) {
         if self.internal.is_null() {
             return;
         }
@@ -213,6 +216,16 @@ impl<T: Copy> Drop for DeviceBuffer2D<T> {
         ] -> i32 as "std::int32_t" {
             return cudaFree(ptr);
         });
+    }
+}
+
+impl<T: Copy> Drop for DeviceBuffer2D<T> {
+    #[inline]
+    fn drop(&mut self) {
+        // SAFETY: This is safe since the buffer cannot be used after this.
+        unsafe {
+            self.free();
+        }
     }
 }
 

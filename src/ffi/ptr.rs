@@ -74,7 +74,6 @@ impl DevicePtr {
     /// }
     ///
     /// impl Drop for Object {
-    ///
     ///     fn drop(&mut self) {
     ///         // SAFETY: This is safe because `self` and `self.internal`
     ///         // are not used beyond this unsafe block.
@@ -84,7 +83,6 @@ impl DevicePtr {
     ///         // Propertly deallocate the pointer here and do *NOT* use
     ///         // use `self` for anything!
     ///     }
-    ///
     /// }
     /// ```
     #[inline]

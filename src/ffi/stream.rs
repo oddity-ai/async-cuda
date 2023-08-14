@@ -91,15 +91,18 @@ impl Stream {
         &self.internal
     }
 
-    /// Get readonly reference to internal [`DevicePtr`].
+    /// Get mutable reference to internal [`DevicePtr`].
     #[inline(always)]
     pub fn as_mut_internal(&mut self) -> &mut DevicePtr {
         &mut self.internal
     }
-}
 
-impl Drop for Stream {
-    fn drop(&mut self) {
+    /// Destroy stream.
+    ///
+    /// # Safety
+    ///
+    /// The object may not be used after this function is called, except for being dropped.
+    pub unsafe fn destroy(&mut self) {
         if self.internal.is_null() {
             return;
         }
@@ -122,6 +125,16 @@ impl Drop for Stream {
         ] -> i32 as "std::int32_t" {
             return cudaStreamDestroy((cudaStream_t) ptr);
         });
+    }
+}
+
+impl Drop for Stream {
+    #[inline]
+    fn drop(&mut self) {
+        // SAFETY: This is safe since the object cannot be used after this.
+        unsafe {
+            self.destroy();
+        }
     }
 }
 

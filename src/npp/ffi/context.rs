@@ -107,14 +107,33 @@ impl Context {
     pub(crate) fn as_ptr(&self) -> *const std::ffi::c_void {
         self.raw
     }
-}
 
-impl Drop for Context {
-    fn drop(&mut self) {
+    /// Delete the context.
+    ///
+    /// # Safety
+    ///
+    /// The context may not be used after this function is called, except for being dropped.
+    pub unsafe fn delete(&mut self) {
+        if self.raw.is_null() {
+            return;
+        }
+
         let raw = self.raw;
+        self.raw = std::ptr::null_mut();
+
         cpp!(unsafe [raw as "void*"] {
             delete ((NppStreamContext*) raw);
         });
+    }
+}
+
+impl Drop for Context {
+    #[inline]
+    fn drop(&mut self) {
+        // SAFETY: This is safe since the buffer cannot be used after this.
+        unsafe {
+            self.delete();
+        }
     }
 }
 
