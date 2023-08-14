@@ -21,6 +21,9 @@ synchronization happens when it is necessary (and synchronization itself is also
 On top of common CUDA primitives, this library also includes async wrappers for
 [NVIDIA's NPP library](https://developer.nvidia.com/npp).
 
+The async wrappers for TensorRT have been moved to a separate repository here:
+[`async-tensorrt`](https://github.com/oddity-ai/async-tensorrt).
+
 ## 🛠 S️️tatus
 
 This project is still a work-in-progress, and will contain bugs. Some parts of the API have not
