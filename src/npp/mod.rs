@@ -7,7 +7,7 @@ pub mod remap;
 pub mod resize;
 pub mod stream;
 
-#[cfg(feature = "unstable")]
+#[cfg(feature = "npp-unstable")]
 pub mod resize_batch;
 
 pub use constant_border::ConstantBorder;
@@ -18,7 +18,7 @@ pub use remap::remap;
 pub use resize::resize;
 pub use stream::Stream;
 
-#[cfg(feature = "unstable")]
+#[cfg(feature = "npp-unstable")]
 pub use resize_batch::resize_batch;
 
 #[cfg(test)]

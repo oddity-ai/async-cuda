@@ -189,8 +189,8 @@ pub fn resize_batch(
 mod tests {
     use super::*;
 
-    use crate::ffi::context::Context;
-    use crate::tests::sync::memory::*;
+    use crate::npp::ffi::context::Context;
+    use crate::npp::tests::sync::memory::*;
 
     #[test]
     fn test_resize_batch() {

@@ -17,8 +17,8 @@ type Result<T> = std::result::Result<T, crate::npp::error::Error>;
 ///
 /// # Stability
 ///
-/// This function is only available when the `unstable` feature is enabled. Testing shows that the
-/// batched version can be imprecise when the input image dimensions are small.
+/// This function is only available when the `npp-unstable` feature is enabled. Testing shows that
+/// the batched version can be imprecise when the input image dimensions are small.
 ///
 /// Currently identified suspicious behavior:
 /// * It does not necessarily produce the same output over a batch of images that would have been

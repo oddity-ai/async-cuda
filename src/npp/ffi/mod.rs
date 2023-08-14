@@ -5,7 +5,7 @@ pub mod copy_constant_border;
 pub mod remap;
 pub mod resize;
 
-#[cfg(feature = "unstable")]
+#[cfg(feature = "npp-unstable")]
 pub mod resize_batch;
 
 /// Convenience macro for turning an NPP error code into a `std::result::Result`.
