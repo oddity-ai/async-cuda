@@ -38,8 +38,7 @@ unsafe impl<T: Copy> Sync for DeviceBuffer2D<T> {}
 
 impl<T: Copy> DeviceBuffer2D<T> {
     pub fn new(width: usize, height: usize, num_channels: usize) -> Self {
-        let device =
-            Device::get().unwrap_or_else(|err| panic!("could not determine current device: {err}"));
+        let device = Device::get_or_panic();
         let mut ptr: *mut std::ffi::c_void = std::ptr::null_mut();
         let ptr_ptr = std::ptr::addr_of_mut!(ptr);
         let mut pitch = 0_usize;
@@ -218,7 +217,7 @@ impl<T: Copy> DeviceBuffer2D<T> {
             return;
         }
 
-        let _device_guard = Device::bind_or_panic(self.device);
+        Device::set_or_panic(self.device);
 
         // SAFETY: Safe because we won't use pointer after this.
         let mut internal = unsafe { self.internal.take() };

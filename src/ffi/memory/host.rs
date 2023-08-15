@@ -35,8 +35,7 @@ unsafe impl<T: Copy> Sync for HostBuffer<T> {}
 
 impl<T: Copy> HostBuffer<T> {
     pub fn new(num_elements: usize) -> Self {
-        let device =
-            Device::get().unwrap_or_else(|err| panic!("could not determine current device: {err}"));
+        let device = Device::get_or_panic();
         let mut ptr: *mut std::ffi::c_void = std::ptr::null_mut();
         let ptr_ptr = std::ptr::addr_of_mut!(ptr);
         let size = num_elements * std::mem::size_of::<T>();
@@ -171,7 +170,7 @@ impl<T: Copy> HostBuffer<T> {
             return;
         }
 
-        let _device_guard = Device::bind_or_panic(self.device);
+        Device::set_or_panic(self.device);
 
         // SAFETY: Safe because we won't use the pointer after this.
         let mut internal = unsafe { self.internal.take() };

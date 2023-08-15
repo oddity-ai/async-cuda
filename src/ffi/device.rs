@@ -27,6 +27,7 @@ pub fn num_devices() -> Result<usize> {
 pub struct Device;
 
 impl Device {
+    #[inline]
     pub fn get() -> Result<DeviceId> {
         let mut id: i32 = 0;
         let id_ptr = std::ptr::addr_of_mut!(id);
@@ -38,6 +39,12 @@ impl Device {
         result!(ret, id)
     }
 
+    #[inline(always)]
+    pub fn get_or_panic() -> DeviceId {
+        Device::get().unwrap_or_else(|err| panic!("failed to get device: {err}"))
+    }
+
+    #[inline]
     pub fn set(id: DeviceId) -> Result<()> {
         let ret = cpp!(unsafe [
             id as "int"
@@ -47,15 +54,9 @@ impl Device {
         result!(ret)
     }
 
-    #[inline]
-    pub fn bind(id: DeviceId) -> Result<DeviceGuard> {
-        DeviceGuard::activate(id)
-    }
-
-    #[inline]
-    pub fn bind_or_panic(id: DeviceId) -> DeviceGuard {
-        DeviceGuard::activate(id)
-            .unwrap_or_else(|err| panic!("failed to bind to device {}: {}", id, err))
+    #[inline(always)]
+    pub fn set_or_panic(id: DeviceId) {
+        Device::set(id).unwrap_or_else(|err| panic!("failed to set device {id}: {err}"));
     }
 
     pub fn synchronize() -> Result<()> {
@@ -81,36 +82,6 @@ impl Device {
     }
 }
 
-/// Guard to keep specified active for the duration of the surrounding scope.
-pub struct DeviceGuard {
-    pub active: DeviceId,
-    pub previous: DeviceId,
-}
-
-impl DeviceGuard {
-    /// Create [`DeviceGuard`] and activate it.
-    ///
-    /// # Arguments
-    ///
-    /// * `device` - Device to activate.
-    fn activate(device: DeviceId) -> Result<DeviceGuard> {
-        let previous = Device::get()?;
-        Device::set(device)?;
-        Ok(Self {
-            active: device,
-            previous,
-        })
-    }
-}
-
-impl Drop for DeviceGuard {
-    fn drop(&mut self) {
-        Device::set(self.previous).unwrap_or_else(|err| {
-            panic!("failed to set device ordinal: {} ({})", self.previous, err)
-        });
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -129,11 +100,6 @@ mod tests {
     fn test_set_device() {
         assert!(Device::set(0).is_ok());
         assert!(matches!(Device::get(), Ok(0)));
-    }
-
-    #[test]
-    fn test_bind_device() {
-        assert!(Device::bind(0).is_ok());
     }
 
     #[test]

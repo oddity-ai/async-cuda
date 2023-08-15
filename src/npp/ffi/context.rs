@@ -126,7 +126,7 @@ impl Context {
             return;
         }
 
-        let _device_guard = Device::bind_or_panic(self.stream.inner().device());
+        Device::set_or_panic(self.stream.inner().device());
 
         let raw = self.raw;
         self.raw = std::ptr::null_mut();

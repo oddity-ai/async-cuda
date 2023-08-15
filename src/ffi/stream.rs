@@ -31,13 +31,11 @@ unsafe impl Sync for Stream {}
 
 impl Stream {
     pub fn null() -> Self {
-        let device =
-            Device::get().unwrap_or_else(|err| panic!("could not determine current device: {err}"));
         Self {
             // SAFETY: This is safe because a null pointer for stream indicates the default
             // stream in CUDA and all functions accept this.
             internal: unsafe { DevicePtr::null() },
-            device,
+            device: Device::get_or_panic(),
         }
     }
 
@@ -60,7 +58,7 @@ impl Stream {
     }
 
     pub fn synchronize(&self) -> Result<()> {
-        let _device_guard = Device::bind(self.device)?;
+        Device::set(self.device)?;
         let ptr = self.internal.as_ptr();
         let ret = cpp!(unsafe [
             ptr as "void*"
@@ -71,7 +69,7 @@ impl Stream {
     }
 
     pub fn add_callback(&self, f: impl FnOnce() + Send) -> Result<()> {
-        let _device_guard = Device::bind(self.device)?;
+        Device::set(self.device)?;
         let ptr = self.internal.as_ptr();
         let f_boxed = Box::new(f) as Box<dyn FnOnce()>;
         let f_boxed2 = Box::new(f_boxed);
@@ -123,7 +121,7 @@ impl Stream {
             return;
         }
 
-        let _device_guard = Device::bind_or_panic(self.device);
+        Device::set_or_panic(self.device);
 
         // SAFETY: This will cause `self` to hold a null pointer. It is safe here because we don't
         // use the object after this.
