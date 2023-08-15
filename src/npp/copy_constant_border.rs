@@ -1,6 +1,5 @@
 use crate::memory::DeviceBuffer2D;
 use crate::npp::constant_border::ConstantBorder;
-use crate::npp::ffi;
 use crate::npp::stream::Stream;
 use crate::runtime::Future;
 
@@ -39,7 +38,7 @@ pub async fn copy_constant_border(
 
     let context = stream.to_context();
     Future::new(move || {
-        ffi::copy_constant_border::copy_constant_border(
+        crate::ffi::npp::copy_constant_border::copy_constant_border(
             input.inner(),
             output.inner_mut(),
             constant_border,

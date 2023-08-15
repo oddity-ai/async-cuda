@@ -1,7 +1,7 @@
 use cpp::cpp;
 
-use crate::npp::ffi::context::Context;
-use crate::npp::ffi::result;
+use crate::ffi::npp::context::Context;
+use crate::ffi::npp::result;
 use crate::npp::region::Region;
 
 type Result<T> = std::result::Result<T, crate::npp::error::Error>;
@@ -189,7 +189,7 @@ pub fn resize_batch(
 mod tests {
     use super::*;
 
-    use crate::npp::ffi::context::Context;
+    use crate::ffi::npp::context::Context;
     use crate::npp::tests::sync::memory::*;
 
     #[test]

@@ -1,7 +1,7 @@
 use cpp::cpp;
 
 use crate::ffi::device::Device;
-use crate::npp::ffi::result;
+use crate::ffi::npp::result;
 use crate::stream::Stream;
 
 /// NPP stream context structure.

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::npp::ffi::context::Context;
+use crate::ffi::npp::context::Context;
 use crate::runtime::Future;
 
 /// Represents an NPP stream.

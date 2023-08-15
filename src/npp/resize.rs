@@ -1,5 +1,4 @@
 use crate::memory::DeviceBuffer2D;
-use crate::npp::ffi;
 use crate::npp::region::Region;
 use crate::npp::stream::Stream;
 use crate::runtime::Future;
@@ -42,7 +41,7 @@ pub async fn resize(
 
     let context = stream.to_context();
     Future::new(move || {
-        ffi::resize::resize(
+        crate::ffi::npp::resize::resize(
             input.inner(),
             input_region,
             output.inner_mut(),

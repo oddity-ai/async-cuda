@@ -1,5 +1,4 @@
 use crate::memory::DeviceBuffer2D;
-use crate::npp::ffi;
 use crate::npp::region::Region;
 use crate::npp::stream::Stream;
 use crate::runtime::Future;
@@ -93,7 +92,7 @@ pub async fn resize_batch(
             .iter_mut()
             .map(|(input, output)| (input.inner(), output.inner_mut()))
             .collect::<Vec<_>>();
-        ffi::resize_batch::resize_batch(
+        crate::ffi::npp::resize_batch::resize_batch(
             inputs_and_outputs_inner.as_mut_slice(),
             input_region,
             output_region,

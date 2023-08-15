@@ -1,8 +1,8 @@
 use cpp::cpp;
 
+use crate::ffi::npp::context::Context;
+use crate::ffi::npp::result;
 use crate::npp::constant_border::ConstantBorder;
-use crate::npp::ffi::context::Context;
-use crate::npp::ffi::result;
 
 type Result<T> = std::result::Result<T, crate::npp::error::Error>;
 
@@ -64,7 +64,7 @@ pub fn copy_constant_border(
 mod tests {
     use super::*;
 
-    use crate::npp::ffi::context::Context;
+    use crate::ffi::npp::context::Context;
     use crate::npp::tests::image::*;
     use crate::npp::tests::sync::memory::*;
 

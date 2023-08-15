@@ -1,10 +1,10 @@
-#[cfg(npp)]
+#[cfg(feature = "npp")]
 use async_cuda::ffi::device::Device;
-#[cfg(npp)]
+#[cfg(feature = "npp")]
 use async_cuda::stream::Stream;
 
-#[cfg(npp)]
-use async_cuda::npp::ffi::context::Context;
+#[cfg(feature = "npp")]
+use async_cuda::ffi::npp::context::Context;
 
 /// This integration test helps determine which ffi functions affect the GPU state, or local thread
 /// state.
@@ -39,7 +39,7 @@ use async_cuda::npp::ffi::context::Context;
 /// | ----------------------------- | ---------------- | ------------------------- |
 /// | `Context::from_null_stream`   | ❌               | ✅                        |
 /// | `Context::from_stream`        | ❌               | ✅                        |
-#[cfg(npp)]
+#[cfg(feature = "npp")]
 #[tokio::test]
 async fn test_side_effects() {
     // First block contains stuff we are not interested in measuring...

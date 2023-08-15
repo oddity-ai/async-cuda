@@ -6,6 +6,9 @@ pub mod memory;
 pub mod ptr;
 pub mod stream;
 
+#[cfg(feature = "npp")]
+pub mod npp;
+
 /// Convenience macro for turning a CUDA error code into a `std::result::Result`.
 ///
 /// # Usage

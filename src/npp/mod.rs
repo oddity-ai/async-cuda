@@ -1,7 +1,6 @@
 pub mod constant_border;
 pub mod copy_constant_border;
 pub mod error;
-pub mod ffi;
 pub mod region;
 pub mod remap;
 pub mod resize;
@@ -22,4 +21,4 @@ pub use stream::Stream;
 pub use resize_batch::resize_batch;
 
 #[cfg(test)]
-mod tests;
+pub mod tests;

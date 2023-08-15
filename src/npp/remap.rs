@@ -1,5 +1,4 @@
 use crate::memory::DeviceBuffer2D;
-use crate::npp::ffi;
 use crate::npp::stream::Stream;
 use crate::runtime::Future;
 
@@ -63,7 +62,7 @@ pub async fn remap(
 
     let context = stream.to_context();
     Future::new(move || {
-        ffi::remap::remap(
+        crate::ffi::npp::remap::remap(
             input.inner(),
             output.inner_mut(),
             map_x.inner(),
