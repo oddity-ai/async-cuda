@@ -1,5 +1,6 @@
 use crate::ffi;
 use crate::runtime::{Future, SynchronizeFuture};
+use crate::device::DeviceId;
 
 type Result<T> = std::result::Result<T, crate::error::Error>;
 
@@ -36,6 +37,17 @@ impl Stream {
     /// [CUDA documentation](https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html#group__CUDART__STREAM_1g6a3c4b819e6a994c26d0c4824a4c80da)
     pub async fn new() -> Result<Self> {
         let inner = Future::new(ffi::stream::Stream::new).await?;
+        Ok(Self { inner })
+    }
+
+    /// Create an asynchronous stream with a given device.
+    ///
+    /// [CUDA documentation](https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html#group__CUDART__STREAM_1g6a3c4b819e6a994c26d0c4824a4c80da)
+    pub async fn with_device(device: DeviceId) -> Result<Self> {
+        let inner = Future::new(|| {
+            ffi::device::Device::set_or_panic(device);
+            ffi::stream::Stream::new()
+        }).await?;
         Ok(Self { inner })
     }
 
