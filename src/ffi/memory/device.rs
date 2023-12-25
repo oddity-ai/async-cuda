@@ -35,7 +35,8 @@ unsafe impl<T: Copy> Sync for DeviceBuffer<T> {}
 
 impl<T: Copy> DeviceBuffer<T> {
     pub fn new(num_elements: usize, stream: &Stream) -> Self {
-        let device = Device::get_or_panic();
+        Device::set_or_panic(stream.device());
+        let device = stream.device();
         let mut ptr: *mut std::ffi::c_void = std::ptr::null_mut();
         let ptr_ptr = std::ptr::addr_of_mut!(ptr);
         let size = num_elements * std::mem::size_of::<T>();
