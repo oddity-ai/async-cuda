@@ -1,10 +1,20 @@
 #[cfg(unix)]
 fn main() {
+    let cuda_path = std::env::var("CUDA_PATH").unwrap_or_else(|_| "/usr/local/cuda".to_string());
+
+    let cuda_include_path =
+        std::env::var("CUDA_INCLUDE_PATH").unwrap_or_else(|_| format!("{cuda_path}/include"));
+
+    let cuda_lib_path =
+        std::env::var("CUDA_LIB_PATH").unwrap_or_else(|_| format!("{cuda_path}/lib64"));
+
     cpp_build::Config::new()
-        .include("/usr/local/cuda/include")
+        .include(cuda_include_path)
         .build("src/lib.rs");
-    println!("cargo:rustc-link-search=/usr/local/cuda/lib64");
+
+    println!("cargo:rustc-link-search={cuda_lib_path}");
     println!("cargo:rustc-link-lib=cudart");
+
     #[cfg(feature = "npp")]
     link_npp_libraries();
 }
