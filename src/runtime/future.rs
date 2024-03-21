@@ -398,14 +398,14 @@ mod tests {
         Future::new({
             let first_future_completed = first_future_completed.clone();
             move || {
-                first_future_completed.store(true, Ordering::Relaxed);
+                first_future_completed.store(true, Ordering::SeqCst);
             }
         })
         .await;
         assert!(
             Future::new({
                 let first_future_completed = first_future_completed.clone();
-                move || first_future_completed.load(Ordering::Relaxed)
+                move || first_future_completed.load(Ordering::SeqCst)
             })
             .await
         );

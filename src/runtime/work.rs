@@ -40,10 +40,10 @@ mod tests {
         let work = Work::new({
             let make_me_true = make_me_true.clone();
             move || {
-                make_me_true.store(true, std::sync::atomic::Ordering::Relaxed);
+                make_me_true.store(true, std::sync::atomic::Ordering::SeqCst);
             }
         });
         work.run();
-        assert!(make_me_true.load(std::sync::atomic::Ordering::Relaxed));
+        assert!(make_me_true.load(std::sync::atomic::Ordering::SeqCst));
     }
 }
