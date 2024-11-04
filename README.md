@@ -38,13 +38,13 @@ Make sure you have the necessary dependencies installed:
 Then, add the following to your dependencies in `Cargo.toml`:
 
 ```toml
-async-cuda = "0.5"
+async-cuda = "0.6"
 ```
 
 To enable the NPP functions:
 
 ```toml
-async-cuda = { version = "0.5", features = ["npp"] }
+async-cuda = { version = "0.6", features = ["npp"] }
 ```
 
 ## ⚠️ Safety warning
