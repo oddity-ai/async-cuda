@@ -9,6 +9,7 @@
 /// undefined behavior.
 ///
 /// Use the `unsafe` function `Ptr::null` to create a null pointer in cases where usage is safe.
+#[derive(Debug)]
 pub struct DevicePtr {
     addr: *mut std::ffi::c_void,
 }
